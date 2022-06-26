@@ -7,6 +7,7 @@ with open('config.json') as f:
     api_key = data['api_key']
     spotify_token = data['spotify_token']
     discord_webhook = data['discord_webhook']
+    experimental = data['experimental']
 
 details = [0, "Song"]
 
@@ -16,17 +17,26 @@ while True:
         r = requests.get(f'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=matttmlive&api_key={api_key}&format=json')
         data = r.json()
 
-        song = data['recenttracks']['track'][0]
-        if '@attr' in song: # now playing
-            if song['name'] == details[1]:
-                do_post = False
+        if experimental:
+            song = data['recenttracks']['track'][0]
+            if '@attr' in song: # now playing
+                if song['name'] == details[1]:
+                    do_post = False
+                else:
+                    details = [str(time.time()).split('.')[0], song['name']]
             else:
-                details = [str(time.time()).split('.')[0], song['name']]
+                if song['date']['uts'] == details[0]:
+                    do_post = False
+                else:
+                    details = [song['date']['uts'], song['name']]
         else:
-            if song['date']['uts'] == details[0]:
-                do_post = False
-            else:
-                details = [song['date']['uts'], song['name']]
+            song = data['recenttracks']['track'][0]
+            if '@attr' in song: # now playing
+                song = data['recenttracks']['track'][1]
+                if song['date']['uts'] == details[0]:
+                    do_post = False
+                else:
+                    details = [song['date']['uts'], song['name']]
         artist_name = song['artist']['#text']
         song_name = song['name']
         album_name = song['album']['#text']
