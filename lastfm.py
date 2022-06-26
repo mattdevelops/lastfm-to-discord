@@ -8,6 +8,7 @@ with open('config.json') as f:
     spotify_token = data['spotify_token']
     discord_webhook = data['discord_webhook']
     experimental = data['experimental']
+    refresh = int(data['refresh'])
 
 details = [0, "Song"]
 
@@ -86,4 +87,4 @@ while True:
     except:
         pass
 
-    time.sleep(30)
+    time.sleep(refresh)
