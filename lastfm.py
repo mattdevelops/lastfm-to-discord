@@ -34,10 +34,10 @@ while True:
             song = data['recenttracks']['track'][0]
             if '@attr' in song: # now playing
                 song = data['recenttracks']['track'][1]
-                if song['date']['uts'] == details[0]:
-                    do_post = False
-                else:
-                    details = [song['date']['uts'], song['name']]
+            if song['date']['uts'] == details[0]:
+                do_post = False
+            else:
+                details = [song['date']['uts'], song['name']]
         artist_name = song['artist']['#text']
         song_name = song['name']
         album_name = song['album']['#text']
