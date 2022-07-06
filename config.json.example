@@ -2,4 +2,6 @@
   "api_key": "",
   "spotify_token": "",
   "discord_webhook": ""
+  "experimental": false,
+  "refresh": 30
 }
